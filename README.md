@@ -35,7 +35,7 @@ pip install -r requirements.txt
 
 2. Run the program:
    ```bash
-   python PDF_processor.py
+   python PDF_Processor.py
    ```
 
 3. Follow the on-screen menu:
