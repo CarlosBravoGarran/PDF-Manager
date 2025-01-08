@@ -20,7 +20,7 @@ def remove_pages(pdf_path, pages_to_remove, output_dir):
         writer = PyPDF2.PdfWriter()
 
         for i in range(len(reader.pages)):
-            if i not in pages_to_remove:
+            if i + 1 not in pages_to_remove:  # Pages are 1-based now
                 writer.add_page(reader.pages[i])
 
         base_name = os.path.splitext(os.path.basename(pdf_path))[0]
@@ -35,12 +35,16 @@ def split_pdf(pdf_path, ranges, output_dir):
         reader = PyPDF2.PdfReader(pdf_file)
 
         base_name = os.path.splitext(os.path.basename(pdf_path))[0]
-        for idx, (start, end) in enumerate(ranges):
+        for start, end in ranges:
             writer = PyPDF2.PdfWriter()
-            for i in range(start, end + 1):
+            start_index = start - 1
+            end_index = len(reader.pages) if end == "end" else int(end)
+
+            for i in range(start_index, end_index):
                 writer.add_page(reader.pages[i])
 
-            output_path = os.path.join(output_dir, f"{base_name}_part_{idx + 1}.pdf")
+            range_str = f"{start}-{end if end != 'end' else len(reader.pages)}"
+            output_path = os.path.join(output_dir, f"{base_name}_{range_str}.pdf")
             with open(output_path, 'wb') as output_file:
                 writer.write(output_file)
             print(f"File created: {output_path}")
@@ -72,7 +76,7 @@ def menu():
 
     if option == '1':
         pdf_path = input("Path to the PDF: ")
-        pages = input("Pages to remove (comma-separated, starting from 0): ")
+        pages = input("Pages to remove (comma-separated, starting from 1): ")
         try:
             pages_to_remove = list(map(int, pages.split(',')))
             output_dir = input("Output directory: ")
@@ -82,9 +86,10 @@ def menu():
 
     elif option == '2':
         pdf_path = input("Path to the PDF: ")
-        ranges = input("Ranges to split (e.g., 0-2,3-5): ")
+        ranges = input("Ranges to split (e.g., 1-3,4-end): ")
         try:
-            ranges = [tuple(map(int, r.split('-'))) for r in ranges.split(',')]
+            ranges = [tuple(r.split('-')) for r in ranges.split(',')]
+            ranges = [(int(start), end if end == "end" else int(end)) for start, end in ranges]
             output_dir = input("Output directory: ")
             split_pdf(pdf_path, ranges, output_dir)
         except ValueError:
