@@ -24,7 +24,7 @@ def remove_pages(pdf_path, pages_to_remove, output_dir):
         writer = PyPDF2.PdfWriter()
 
         for i in range(len(reader.pages)):
-            if i + 1 not in pages_to_remove:  # Pages are 1-based now
+            if i + 1 not in pages_to_remove:
                 writer.add_page(reader.pages[i])
 
         base_name = os.path.splitext(os.path.basename(pdf_path))[0]
