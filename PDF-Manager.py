@@ -15,6 +15,10 @@ readline.parse_and_bind('tab: complete')
 
 def remove_pages(pdf_path, pages_to_remove, output_dir):
     """Removes specific pages from a PDF."""
+    if not os.path.exists(pdf_path):
+        print(f"Error: File '{pdf_path}' does not exist.")
+        return
+
     with open(pdf_path, 'rb') as pdf_file:
         reader = PyPDF2.PdfReader(pdf_file)
         writer = PyPDF2.PdfWriter()
@@ -31,6 +35,10 @@ def remove_pages(pdf_path, pages_to_remove, output_dir):
 
 def split_pdf(pdf_path, ranges, output_dir):
     """Splits a PDF into multiple files based on given ranges."""
+    if not os.path.exists(pdf_path):
+        print(f"Error: File '{pdf_path}' does not exist.")
+        return
+
     with open(pdf_path, 'rb') as pdf_file:
         reader = PyPDF2.PdfReader(pdf_file)
 
@@ -53,13 +61,17 @@ def merge_pdfs(pdf_paths, output_dir):
     """Merges multiple PDF files into one."""
     writer = PyPDF2.PdfWriter()
 
-    for pdf_path in pdf_paths:
+    for pdf_path in [path.strip() for path in pdf_paths]:
+        if not os.path.exists(pdf_path):
+            print(f"Error: File '{pdf_path}' does not exist.")
+            return
+
         with open(pdf_path, 'rb') as pdf_file:
             reader = PyPDF2.PdfReader(pdf_file)
             for page in reader.pages:
                 writer.add_page(page)
 
-    base_name = os.path.splitext(os.path.basename(pdf_paths[0]))[0]
+    base_name = os.path.splitext(os.path.basename(pdf_paths[0].strip()))[0]
     output_path = os.path.join(output_dir, f"{base_name}_merged.pdf")
     with open(output_path, 'wb') as output_file:
         writer.write(output_file)
@@ -96,7 +108,7 @@ def menu():
             print("Invalid input for ranges. Please enter ranges in the format start-end, separated by commas.")
 
     elif option == '3':
-        pdf_paths = input("Paths to the PDFs to merge (comma-separated): ").split(',')
+        pdf_paths = input("Paths to the PDFs to merge (comma-separated): ").replace(', ', ',').split(',')
         output_dir = input("Output directory: ")
         merge_pdfs(pdf_paths, output_dir)
 
