@@ -3,6 +3,7 @@ import tkinter as tk
 from tkinter import filedialog, messagebox
 import PyPDF2
 
+# Remove Pages
 def remove_pages_gui(pdf_path, pages_to_remove, output_dir):
     try:
         with open(pdf_path, 'rb') as pdf_file:
@@ -22,6 +23,7 @@ def remove_pages_gui(pdf_path, pages_to_remove, output_dir):
     except Exception as e:
         messagebox.showerror("Error", str(e))
 
+# Split PDF
 def split_pdf_gui(pdf_path, ranges, output_dir):
     try:
         with open(pdf_path, 'rb') as pdf_file:
@@ -45,6 +47,7 @@ def split_pdf_gui(pdf_path, ranges, output_dir):
     except Exception as e:
         messagebox.showerror("Error", str(e))
 
+# Merge PDFs
 def merge_pdfs_gui(pdf_paths, output_dir):
     try:
         writer = PyPDF2.PdfWriter()
@@ -90,6 +93,7 @@ def show_menu():
     tk.Button(root, text="Split PDF", command=show_split_pdf, width=button_width).pack(pady=10)
     tk.Button(root, text="Merge PDFs", command=show_merge_pdfs, width=button_width).pack(pady=10)
 
+# tk remove pages
 def show_remove_pages():
     for widget in root.winfo_children():
         widget.destroy()
@@ -117,6 +121,7 @@ def show_remove_pages():
     tk.Button(root, text="Remove Pages", command=lambda: remove_pages_gui(pdf_entry.get(), list(map(int, pages_entry.get().split(','))), output_entry.get()), width=15).grid(row=7, column=0, columnspan=2, pady=10)
     tk.Button(root, text="Back to Menu", command=show_menu, width=15).grid(row=8, column=0, columnspan=2, pady=5)
 
+# tk split pdf
 def show_split_pdf():
     for widget in root.winfo_children():
         widget.destroy()
@@ -143,6 +148,7 @@ def show_split_pdf():
     tk.Button(root, text="Split PDF", command=lambda: split_pdf_gui(pdf_entry.get(), [(int(r.split('-')[0]), r.split('-')[1] if 'end' in r.split('-')[1] else int(r.split('-')[1])) for r in ranges_entry.get().split(',')], output_entry.get()), width=15).grid(row=7, column=0, columnspan=2, pady=10)
     tk.Button(root, text="Back to Menu", command=show_menu, width=15).grid(row=8, column=0, columnspan=2, pady=5)
 
+# tk merge pdfs
 def show_merge_pdfs():
     for widget in root.winfo_children():
         widget.destroy()
