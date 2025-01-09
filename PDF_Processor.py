@@ -3,7 +3,6 @@ import tkinter as tk
 from tkinter import filedialog, messagebox
 import PyPDF2
 
-# Remove Pages
 def remove_pages_gui(pdf_path, pages_to_remove, output_dir):
     try:
         with open(pdf_path, 'rb') as pdf_file:
@@ -23,7 +22,6 @@ def remove_pages_gui(pdf_path, pages_to_remove, output_dir):
     except Exception as e:
         messagebox.showerror("Error", str(e))
 
-# Split PDF
 def split_pdf_gui(pdf_path, ranges, output_dir):
     try:
         with open(pdf_path, 'rb') as pdf_file:
@@ -47,7 +45,6 @@ def split_pdf_gui(pdf_path, ranges, output_dir):
     except Exception as e:
         messagebox.showerror("Error", str(e))
 
-# Merge PDFs
 def merge_pdfs_gui(pdf_paths, output_dir):
     try:
         writer = PyPDF2.PdfWriter()
@@ -67,14 +64,24 @@ def merge_pdfs_gui(pdf_paths, output_dir):
     except Exception as e:
         messagebox.showerror("Error", str(e))
 
-def browse_file(entry_field):
+def browse_file(entry_field, output_entry=None):
+    file_path = filedialog.askopenfilename(initialdir=os.path.expanduser("~"), filetypes=[("PDF files", "*.pdf")])
+    if file_path:
+        entry_field.delete(0, tk.END)
+        entry_field.insert(0, file_path)
+        if output_entry is not None:
+            output_entry.delete(0, tk.END)
+            output_entry.insert(0, os.path.dirname(file_path))
     file_path = filedialog.askopenfilename(filetypes=[("PDF files", "*.pdf")])
+    if file_path and output_entry is not None:
+        output_entry.delete(0, tk.END)
+        output_entry.insert(0, os.path.dirname(file_path))
     if file_path:
         entry_field.delete(0, tk.END)
         entry_field.insert(0, file_path)
 
 def browse_directory(entry_field):
-    dir_path = filedialog.askdirectory()
+    dir_path = filedialog.askdirectory(initialdir=os.path.expanduser("~"))
     if dir_path:
         entry_field.delete(0, tk.END)
         entry_field.insert(0, dir_path)
@@ -93,7 +100,6 @@ def show_menu():
     tk.Button(root, text="Split PDF", command=show_split_pdf, width=button_width).pack(pady=10)
     tk.Button(root, text="Merge PDFs", command=show_merge_pdfs, width=button_width).pack(pady=10)
 
-# tk remove pages
 def show_remove_pages():
     for widget in root.winfo_children():
         widget.destroy()
@@ -106,7 +112,7 @@ def show_remove_pages():
     tk.Label(root, text="PDF File:").grid(row=1, column=0, columnspan=2, sticky="w")
     pdf_entry = tk.Entry(root, width=40)
     pdf_entry.grid(row=2, column=0, padx=5, pady=5, sticky="ew")
-    tk.Button(root, text="Browse PDF", command=lambda: browse_file(pdf_entry), width=15).grid(row=2, column=1, padx=5, pady=5)
+    tk.Button(root, text="Browse PDF", command=lambda: browse_file(pdf_entry, output_entry), width=15).grid(row=2, column=1, padx=5, pady=5)
 
     tk.Label(root, text="Pages to remove (e.g., 1,2,3):").grid(row=3, column=0, columnspan=2, sticky="w")
     pages_entry = tk.Entry(root, width=40)
@@ -114,14 +120,15 @@ def show_remove_pages():
 
     tk.Label(root, text="Output Directory:").grid(row=5, column=0, columnspan=2, sticky="w")
     output_entry = tk.Entry(root, width=40)
-    output_entry.insert(0, os.getcwd())
+    if pdf_entry.get():
+        output_entry.insert(0, os.path.dirname(pdf_entry.get()))
+    
     output_entry.grid(row=6, column=0, padx=5, pady=5, sticky="ew")
     tk.Button(root, text="Browse Output", command=lambda: browse_directory(output_entry), width=15).grid(row=6, column=1, padx=5, pady=5)
 
     tk.Button(root, text="Remove Pages", command=lambda: remove_pages_gui(pdf_entry.get(), list(map(int, pages_entry.get().split(','))), output_entry.get()), width=15).grid(row=7, column=0, columnspan=2, pady=10)
     tk.Button(root, text="Back to Menu", command=show_menu, width=15).grid(row=8, column=0, columnspan=2, pady=5)
 
-# tk split pdf
 def show_split_pdf():
     for widget in root.winfo_children():
         widget.destroy()
@@ -148,7 +155,6 @@ def show_split_pdf():
     tk.Button(root, text="Split PDF", command=lambda: split_pdf_gui(pdf_entry.get(), [(int(r.split('-')[0]), r.split('-')[1] if 'end' in r.split('-')[1] else int(r.split('-')[1])) for r in ranges_entry.get().split(',')], output_entry.get()), width=15).grid(row=7, column=0, columnspan=2, pady=10)
     tk.Button(root, text="Back to Menu", command=show_menu, width=15).grid(row=8, column=0, columnspan=2, pady=5)
 
-# tk merge pdfs
 def show_merge_pdfs():
     for widget in root.winfo_children():
         widget.destroy()
