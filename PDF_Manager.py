@@ -156,7 +156,7 @@ def show_split_pdf():
     output_entry = tk.Entry(root, width=40)
     tk.Button(root, text="Browse PDF", command=lambda: browse_file(pdf_entry, output_entry), width=15).grid(row=2, column=1, padx=5, pady=5)
 
-    tk.Label(root, text="Ranges (e.g., 1-3,4-5):").grid(row=3, column=0, columnspan=2, sticky="w")
+    tk.Label(root, text="Ranges (e.g., 1-3,4-end):").grid(row=3, column=0, columnspan=2, sticky="w")
     ranges_entry = tk.Entry(root, width=40)
     ranges_entry.grid(row=4, column=0, padx=5, pady=5, sticky="ew")
 
