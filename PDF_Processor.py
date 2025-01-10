@@ -153,14 +153,14 @@ def show_split_pdf():
     tk.Label(root, text="PDF File:").grid(row=1, column=0, columnspan=2, sticky="w")
     pdf_entry = tk.Entry(root, width=40)
     pdf_entry.grid(row=2, column=0, padx=5, pady=5, sticky="ew")
-    tk.Button(root, text="Browse PDF", command=lambda: browse_file(pdf_entry), width=15).grid(row=2, column=1, padx=5, pady=5)
+    output_entry = tk.Entry(root, width=40)  # Output entry initialized here
+    tk.Button(root, text="Browse PDF", command=lambda: browse_file(pdf_entry, output_entry), width=15).grid(row=2, column=1, padx=5, pady=5)
 
     tk.Label(root, text="Ranges (e.g., 1-3,4-5):").grid(row=3, column=0, columnspan=2, sticky="w")
     ranges_entry = tk.Entry(root, width=40)
     ranges_entry.grid(row=4, column=0, padx=5, pady=5, sticky="ew")
 
     tk.Label(root, text="Output Directory:").grid(row=5, column=0, columnspan=2, sticky="w")
-    output_entry = tk.Entry(root, width=40)
     output_entry.grid(row=6, column=0, padx=5, pady=5, sticky="ew")
     tk.Button(root, text="Browse Output", command=lambda: browse_directory(output_entry), width=15).grid(row=6, column=1, padx=5, pady=5)
 
@@ -203,15 +203,15 @@ def show_merge_pdfs():
     tk.Label(root, text="PDF 1:").grid(row=1, column=0, columnspan=2, sticky="w")
     pdf1_entry = tk.Entry(root, width=40)
     pdf1_entry.grid(row=2, column=0, padx=5, pady=5, sticky="ew")
-    tk.Button(root, text="Browse PDF 1", command=lambda: browse_file(pdf1_entry), width=15).grid(row=2, column=1, padx=5, pady=5)
+    output_entry = tk.Entry(root, width=40)  # Output entry initialized here
+    tk.Button(root, text="Browse PDF 1", command=lambda: browse_file(pdf1_entry, output_entry), width=15).grid(row=2, column=1, padx=5, pady=5)
 
     tk.Label(root, text="PDF 2:").grid(row=3, column=0, columnspan=2, sticky="w")
     pdf2_entry = tk.Entry(root, width=40)
     pdf2_entry.grid(row=4, column=0, padx=5, pady=5, sticky="ew")
-    tk.Button(root, text="Browse PDF 2", command=lambda: browse_file(pdf2_entry), width=15).grid(row=4, column=1, padx=5, pady=5)
+    tk.Button(root, text="Browse PDF 2", command=lambda: browse_file(pdf2_entry, output_entry), width=15).grid(row=4, column=1, padx=5, pady=5)
 
     tk.Label(root, text="Output Directory:").grid(row=5, column=0, columnspan=2, sticky="w")
-    output_entry = tk.Entry(root, width=40)
     output_entry.grid(row=6, column=0, padx=5, pady=5, sticky="ew")
     tk.Button(root, text="Browse Output", command=lambda: browse_directory(output_entry), width=15).grid(row=6, column=1, padx=5, pady=5)
 
