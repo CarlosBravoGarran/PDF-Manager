@@ -75,6 +75,17 @@ python PDF_Manager.py
 3. Select the output directory or use the default.
 4. Click on **Merge PDFs**.
 
+## Suggestions
+To enhance your experience and simplify execution, you can create a shortcut such as an alias in `zsh`:
+
+```bash
+alias pdfeditor='pwd | xclip -selection clipboard && cd /home/path/to/directory/PDF-Manager && source venv/bin/activate && python3 PDF_Manager.py && deactivate && cd "$(xclip -selection clipboard -o)"'
+```
+
+This alias allows you to quickly navigate to the project directory, activate the virtual environment, run the program, and return to the original directory.
+
+
+
 ## Contributing
 
 If you think you can improve the project, feel free to contribute. Suggestions, bug reports, and improvements are welcome.
