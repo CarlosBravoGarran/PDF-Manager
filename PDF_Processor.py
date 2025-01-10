@@ -164,7 +164,31 @@ def show_split_pdf():
     output_entry.grid(row=6, column=0, padx=5, pady=5, sticky="ew")
     tk.Button(root, text="Browse Output", command=lambda: browse_directory(output_entry), width=15).grid(row=6, column=1, padx=5, pady=5)
 
-    tk.Button(root, text="Split PDF", command=lambda: split_pdf_gui(pdf_entry.get(), [(int(r.split('-')[0]), r.split('-')[1] if 'end' in r.split('-')[1] else int(r.split('-')[1])) for r in ranges_entry.get().split(',')], output_entry.get()), width=15).grid(row=7, column=0, columnspan=2, pady=10)
+    def handle_split_pdf():
+        pdf_path = pdf_entry.get()
+        output_path = output_entry.get()
+        ranges_text = ranges_entry.get()
+
+        if not pdf_path:
+            messagebox.showerror("Error", "Please select a PDF file.")
+            return
+        if not output_path:
+            messagebox.showerror("Error", "Please select an output directory.")
+            return
+        if not ranges_text.strip():
+            messagebox.showerror("Error", "Please specify ranges to split.")
+            return
+
+        try:
+            ranges = [
+                (int(r.split('-')[0]), r.split('-')[1] if 'end' in r.split('-')[1] else int(r.split('-')[1]))
+                for r in ranges_text.split(',')
+            ]
+            split_pdf_gui(pdf_path, ranges, output_path)
+        except ValueError:
+            messagebox.showerror("Error", "Please enter valid ranges (e.g., 1-3,4-5).")
+
+    tk.Button(root, text="Split PDF", command=handle_split_pdf, width=15).grid(row=7, column=0, columnspan=2, pady=10)
     tk.Button(root, text="Back to Menu", command=show_menu, width=15).grid(row=8, column=0, columnspan=2, pady=5)
 
 def show_merge_pdfs():
@@ -191,7 +215,24 @@ def show_merge_pdfs():
     output_entry.grid(row=6, column=0, padx=5, pady=5, sticky="ew")
     tk.Button(root, text="Browse Output", command=lambda: browse_directory(output_entry), width=15).grid(row=6, column=1, padx=5, pady=5)
 
-    tk.Button(root, text="Merge PDFs", command=lambda: merge_pdfs_gui([pdf1_entry.get(), pdf2_entry.get()], output_entry.get()), width=15).grid(row=7, column=0, columnspan=2, pady=10)
+    def handle_merge_pdfs():
+        pdf1_path = pdf1_entry.get()
+        pdf2_path = pdf2_entry.get()
+        output_path = output_entry.get()
+
+        if not pdf1_path:
+            messagebox.showerror("Error", "Please select the first PDF file.")
+            return
+        if not pdf2_path:
+            messagebox.showerror("Error", "Please select the second PDF file.")
+            return
+        if not output_path:
+            messagebox.showerror("Error", "Please select an output directory.")
+            return
+
+        merge_pdfs_gui([pdf1_path, pdf2_path], output_path)
+
+    tk.Button(root, text="Merge PDFs", command=handle_merge_pdfs, width=15).grid(row=7, column=0, columnspan=2, pady=10)
     tk.Button(root, text="Back to Menu", command=show_menu, width=15).grid(row=8, column=0, columnspan=2, pady=5)
 
 # Main Application
