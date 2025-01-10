@@ -1,76 +1,80 @@
-# PDF Processor
+# PDF Manager
 
-A Python-based tool with a graphical user interface (GUI) for performing operations on PDF files such as removing pages, splitting into multiple files, and merging multiple PDFs. The program supports intuitive inputs and provides automatic naming for output files.
+PDF Manager is a graphical tool developed in Python with `tkinter` that allows you to perform basic operations on PDF documents, such as removing pages, splitting files, and merging multiple documents into one.
+
+![Example Image](docs/image.png)
+![Example Image](docs/image2.png)
+
 ## Features
 
-1. **Remove Pages**
-   - Remove specific pages from a PDF.
-   - Page numbering starts from 1.
-
-2. **Split PDF**
-   - Split a PDF into multiple files based on page ranges.
-   - Allows specifying ranges and selecting output directories.
-
-3. **Merge PDFs**
-   - Merge multiple PDF files into a single PDF.
-   - Supports browsing files for merging and selecting an output directory.
+- **Remove Pages:** Allows you to select a PDF file and remove specific pages.
+- **Split PDF:** Splits a PDF file into multiple files based on specified page ranges.
+- **Merge PDFs:** Combines two or more PDF files into a single file.
 
 ## Prerequisites
 
-Make sure you have Python installed on your system. Additionally, ensure that `tkinter` is installed to support the graphical user interface (GUI). On most systems, `tkinter` comes pre-installed. If not, install it using your system's package manager (e.g., `sudo apt-get install python3-tk` on Ubuntu/Debian).
+- Python 3.8 or higher.
+- Required libraries:
+  - `tkinter`
+  - `PyPDF2`
 
-```bash
-pip install -r requirements.txt
-```
+## Installation
+
+1. Clone this repository.
+   ```bash
+   git clone git@github.com:CarlosBravoGarran/PDF-Manager.git      # SSH
+   cd PDF-Manager
+   ```
+   ```bash
+   git clone https://github.com/CarlosBravoGarran/PDF-Manager.git  # HTTPS
+   cd PDF-Manager
+   ```
+2. Install dependencies (PyPDF2) in your virtual enviroment .
+   ```bash
+   pip install -r requirements.txt
+   ```
+3. Install tkinter.
+
+   On Linux:
+   ```bash
+   sudo apt-get install python3-tk
+   ```
+   
+   On macOS (if not included):
+   ```bash
+   brew install python-tk
+   ```
+      
 
 ## Usage
 
-1. Clone this repository:
-   ```bash
-   git clone git@github.com:CarlosBravoGarran/PDF-Processor.git      # SSH
-   cd PDF-Processor
-   ```
-   ```bash
-   git clone https://github.com/CarlosBravoGarran/PDF-Processor.git  # HTTPS
-   cd PDF-Processor
-   ```
-
-2. Run the program:
-   ```bash
-   python PDF_Processor.py
-   ```
-
-3. Follow the on-screen GUI:
-   - **Remove Pages**: Browse a PDF file, specify pages to remove, and select an output directory.
-   - **Split PDF**: Browse a PDF file, specify ranges to split, and select an output directory.
-   - **Merge PDFs**: Browse two PDF files to merge, and select an output directory.
-
-## Input Format
-
-### Remove Pages
-- Provide the path to the PDF file.
-- Specify the pages to remove (comma-separated, starting from 1).
-
-Example:
-```
-Pages to remove: 2,4,5
+Run the main file to open the graphical interface:
+```bash
+python PDF_Manager.py
 ```
 
-### Split PDF
-- Provide the path to the PDF file.
-- Specify the ranges for splitting (e.g., `1-3,4-5`).
+### Functionalities
 
-Example:
-```
-Ranges to split: 1-3,4-end
-```
+#### Remove Pages
+1. Click on **Remove Pages**.
+2. Select the PDF file.
+3. Enter the pages you want to remove (e.g., `1,2,3`).
+4. Select the output directory or use the default.
+5. Click on **Remove Pages**.
 
-### Merge PDFs
-- Browse two PDF files to merge.
+#### Split PDF
+1. Click on **Split PDF**.
+2. Select the PDF file.
+3. Enter the page ranges (e.g., `1-3,4-5` or `1-end`).
+4. Select the output directory or use the default.
+5. Click on **Split PDF**.
 
-## Output
+#### Merge PDFs
+1. Click on **Merge PDFs**.
+2. Select the PDF files.
+3. Select the output directory or use the default.
+4. Click on **Merge PDFs**.
 
-- Output files are saved in the specified directory with auto-generated names based on the operation performed and the input file name.
-  - For removal: `<original_name>_removed_pages.pdf`
-  - For splitting: `<original_name>_<range>.pdf`
-  - For merging: `merged_file.pdf`
+## Contributing
+
+If you think you can improve the project, feel free to contribute. Suggestions, bug reports, and improvements are welcome.
