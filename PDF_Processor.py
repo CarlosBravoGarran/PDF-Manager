@@ -153,7 +153,7 @@ def show_split_pdf():
     tk.Label(root, text="PDF File:").grid(row=1, column=0, columnspan=2, sticky="w")
     pdf_entry = tk.Entry(root, width=40)
     pdf_entry.grid(row=2, column=0, padx=5, pady=5, sticky="ew")
-    output_entry = tk.Entry(root, width=40)  # Output entry initialized here
+    output_entry = tk.Entry(root, width=40)
     tk.Button(root, text="Browse PDF", command=lambda: browse_file(pdf_entry, output_entry), width=15).grid(row=2, column=1, padx=5, pady=5)
 
     tk.Label(root, text="Ranges (e.g., 1-3,4-5):").grid(row=3, column=0, columnspan=2, sticky="w")
@@ -180,13 +180,19 @@ def show_split_pdf():
             return
 
         try:
-            ranges = [
-                (int(r.split('-')[0]), r.split('-')[1] if 'end' in r.split('-')[1] else int(r.split('-')[1]))
-                for r in ranges_text.split(',')
-            ]
+            ranges = []
+            for r in ranges_text.split(','):
+                if '-' not in r or len(r.split('-')) != 2:
+                    raise ValueError(f"Invalid range format: {r}")
+                start, end = r.split('-')
+                start = int(start)
+                end = "end" if end.lower() == "end" else int(end)
+                ranges.append((start, end))
+
             split_pdf_gui(pdf_path, ranges, output_path)
-        except ValueError:
-            messagebox.showerror("Error", "Please enter valid ranges (e.g., 1-3,4-5).")
+        except ValueError as e:
+            messagebox.showerror("Error", f"Invalid input: {str(e)}")
+
 
     tk.Button(root, text="Split PDF", command=handle_split_pdf, width=15).grid(row=7, column=0, columnspan=2, pady=10)
     tk.Button(root, text="Back to Menu", command=show_menu, width=15).grid(row=8, column=0, columnspan=2, pady=5)
@@ -203,7 +209,7 @@ def show_merge_pdfs():
     tk.Label(root, text="PDF 1:").grid(row=1, column=0, columnspan=2, sticky="w")
     pdf1_entry = tk.Entry(root, width=40)
     pdf1_entry.grid(row=2, column=0, padx=5, pady=5, sticky="ew")
-    output_entry = tk.Entry(root, width=40)  # Output entry initialized here
+    output_entry = tk.Entry(root, width=40)
     tk.Button(root, text="Browse PDF 1", command=lambda: browse_file(pdf1_entry, output_entry), width=15).grid(row=2, column=1, padx=5, pady=5)
 
     tk.Label(root, text="PDF 2:").grid(row=3, column=0, columnspan=2, sticky="w")
@@ -235,7 +241,6 @@ def show_merge_pdfs():
     tk.Button(root, text="Merge PDFs", command=handle_merge_pdfs, width=15).grid(row=7, column=0, columnspan=2, pady=10)
     tk.Button(root, text="Back to Menu", command=show_menu, width=15).grid(row=8, column=0, columnspan=2, pady=5)
 
-# Main Application
 root = tk.Tk()
 root.title("PDF Manager")
 show_menu()
