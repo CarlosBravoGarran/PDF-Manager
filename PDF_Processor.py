@@ -72,13 +72,7 @@ def browse_file(entry_field, output_entry=None):
         if output_entry is not None:
             output_entry.delete(0, tk.END)
             output_entry.insert(0, os.path.dirname(file_path))
-    file_path = filedialog.askopenfilename(filetypes=[("PDF files", "*.pdf")])
-    if file_path and output_entry is not None:
-        output_entry.delete(0, tk.END)
-        output_entry.insert(0, os.path.dirname(file_path))
-    if file_path:
-        entry_field.delete(0, tk.END)
-        entry_field.insert(0, file_path)
+
 
 def browse_directory(entry_field):
     dir_path = filedialog.askdirectory(initialdir=os.path.expanduser("~"))
@@ -120,13 +114,31 @@ def show_remove_pages():
 
     tk.Label(root, text="Output Directory:").grid(row=5, column=0, columnspan=2, sticky="w")
     output_entry = tk.Entry(root, width=40)
-    if pdf_entry.get():
-        output_entry.insert(0, os.path.dirname(pdf_entry.get()))
-    
     output_entry.grid(row=6, column=0, padx=5, pady=5, sticky="ew")
     tk.Button(root, text="Browse Output", command=lambda: browse_directory(output_entry), width=15).grid(row=6, column=1, padx=5, pady=5)
 
-    tk.Button(root, text="Remove Pages", command=lambda: remove_pages_gui(pdf_entry.get(), list(map(int, pages_entry.get().split(','))), output_entry.get()), width=15).grid(row=7, column=0, columnspan=2, pady=10)
+    def handle_remove_pages():
+        pdf_path = pdf_entry.get()
+        output_path = output_entry.get()
+        pages_text = pages_entry.get()
+
+        if not pdf_path:
+            messagebox.showerror("Error", "Please select a PDF file.")
+            return
+        if not output_path:
+            messagebox.showerror("Error", "Please select an output directory.")
+            return
+        if not pages_text.strip():
+            messagebox.showerror("Error", "Please specify pages to remove.")
+            return
+
+        try:
+            pages_to_remove = list(map(int, pages_text.split(',')))
+            remove_pages_gui(pdf_path, pages_to_remove, output_path)
+        except ValueError:
+            messagebox.showerror("Error", "Please enter valid page numbers.")
+
+    tk.Button(root, text="Remove Pages", command=handle_remove_pages, width=15).grid(row=7, column=0, columnspan=2, pady=10)
     tk.Button(root, text="Back to Menu", command=show_menu, width=15).grid(row=8, column=0, columnspan=2, pady=5)
 
 def show_split_pdf():
