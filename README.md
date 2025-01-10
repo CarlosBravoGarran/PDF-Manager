@@ -1,6 +1,6 @@
 # PDF Manager
 
-PDF Manager is a graphical tool developed in Python with `tkinter` that allows you to perform basic operations on PDF documents, such as removing pages, splitting files, and merging multiple documents into one.
+PDF Manager is a graphical tool developed in Python with `tkinter` that allows you to perform basic operations on PDF documents, such as removing pages, splitting files, and merging documents into one.
 
 ![Example Image](docs/image.png)
 ![Example Image](docs/image2.png)
@@ -9,7 +9,7 @@ PDF Manager is a graphical tool developed in Python with `tkinter` that allows y
 
 - **Remove Pages:** Allows you to select a PDF file and remove specific pages.
 - **Split PDF:** Splits a PDF file into multiple files based on specified page ranges.
-- **Merge PDFs:** Combines two or more PDF files into a single file.
+- **Merge PDFs:** Combines two PDF files into a single file.
 
 ## Prerequisites
 
